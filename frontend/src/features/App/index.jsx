@@ -6,7 +6,7 @@ function App() {
 
   async function getBooksData() {
     try {
-      const response = await getBooks();
+      const response = await getBooks({ title: "horror", page: "3" });
       setBooks(response.data);
     } catch (error) {
       console.log(error);
@@ -16,11 +16,15 @@ function App() {
     getBooksData();
   }, []);
 
-  console.log(books);
-
   return (
     <>
       <h2>BookShelf Admin :- Coming Soon!</h2>
+      {books &&
+        books.map((book) => (
+          <ul key={book.id}>
+            <li>{book.title}</li>
+          </ul>
+        ))}
     </>
   );
 }
