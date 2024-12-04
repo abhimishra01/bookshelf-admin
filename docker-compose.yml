@@ -1,9 +1,50 @@
 services:
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+  # backend:
+  #   build:
+  #     context: ./backend
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - database
+  #   environment:
+  #     DATABASE_HOST: database
+  #     JWT_SECRET: 39c80e3b12cdac2f340cd34ff4553a01c24b1634ea
+  #     # Since this is an assignment, For quick testing purposes, I am using a static secret.
+  #     # Plan to update this to a dynamic secret injection via CD workflow / github actions
+  #     DATABASE_PORT: 3306
+  #     DATABASE_USER: root
+  #     DATABASE_PASSWORD:
+  #       3lg3aZBHjY1OX6c
+  #       # TODO: Replace with a secure secret injection via CD workflow / github actions
+  #     DATABASE_NAME: task-management-db
+  #   networks:
+  #     - app-network
+
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #   ports:
+  #     - "3001:3000"
+  #   networks:
+  #     - app-network
+
+  database:
+    image: mysql:8.0
+    container_name: mysql-container
     ports:
-      - 3000:3000
-    # depends_on:
-    # - backend
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: OWdV9ZcdcWy1sN
+      # TODO: Replace with a secure secret injection via CD workflow / github actions
+      MYSQL_DATABASE: bookshelf-db
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:
